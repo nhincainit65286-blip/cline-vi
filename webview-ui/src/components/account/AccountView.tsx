@@ -2,6 +2,7 @@ import type { UsageTransaction as ClineAccountUsageTransaction, PaymentTransacti
 import { isClineInternalTester } from "@shared/internal/account"
 import type { UserOrganization } from "@shared/proto/cline/account"
 import { EmptyRequest } from "@shared/proto/cline/common"
+import { getLanguageKey } from "@shared/Languages"
 import { VSCodeButton, VSCodeDivider, VSCodeDropdown, VSCodeOption, VSCodeTag } from "@vscode/webview-ui-toolkit/react"
 import deepEqual from "fast-deep-equal"
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -9,6 +10,7 @@ import { useInterval } from "react-use"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { type ClineUser, handleSignOut } from "@/context/ClineAuthContext"
 import { useExtensionState } from "@/context/ExtensionStateContext"
+import { useTranslation } from "@/i18n"
 import { AccountServiceClient } from "@/services/grpc-client"
 import ViewHeader from "../common/ViewHeader"
 import VSCodeButtonLink from "../common/VSCodeButtonLink"
@@ -43,11 +45,13 @@ type CachedData = {
 const ClineEnvOptions = ["Production", "Staging", "Local"] as const
 
 const AccountView = ({ onDone, clineUser, organizations, activeOrganization }: AccountViewProps) => {
-	const { environment } = useExtensionState()
+	const { environment, preferredLanguage } = useExtensionState()
+	const languageKey = getLanguageKey(preferredLanguage as any)
+	const t = useTranslation(languageKey === "vi" ? "vi" : "en")
 
 	return (
 		<div className="fixed inset-0 flex flex-col overflow-hidden">
-			<ViewHeader environment={environment} onDone={onDone} showEnvironmentSuffix title="Account" />
+			<ViewHeader environment={environment} onDone={onDone} showEnvironmentSuffix title={t.account.title} />
 			<div className="grow flex flex-col px-5 overflow-y-auto">
 				{clineUser?.uid ? (
 					<ClineAccountView

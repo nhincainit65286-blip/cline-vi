@@ -1,4 +1,5 @@
 import { BooleanRequest, EmptyRequest, StringArrayRequest } from "@shared/proto/cline/common"
+import { getLanguageKey } from "@shared/Languages"
 import { GetTaskHistoryRequest, TaskFavoriteRequest } from "@shared/proto/cline/task"
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react"
 import Fuse, { FuseResult } from "fuse.js"
@@ -8,6 +9,7 @@ import { GroupedVirtuoso } from "react-virtuoso"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select"
 import { useExtensionState } from "@/context/ExtensionStateContext"
+import { useTranslation } from "@/i18n"
 import { TaskServiceClient } from "@/services/grpc-client"
 import { formatSize } from "@/utils/format"
 import ViewHeader from "../common/ViewHeader"
@@ -37,7 +39,9 @@ const HISTORY_FILTERS = {
 
 const HistoryView = ({ onDone }: HistoryViewProps) => {
 	const extensionStateContext = useExtensionState()
-	const { taskHistory, onRelinquishControl, environment } = extensionStateContext
+	const { taskHistory, onRelinquishControl, environment, preferredLanguage } = extensionStateContext
+	const languageKey = getLanguageKey(preferredLanguage as any)
+	const t = useTranslation(languageKey === "vi" ? "vi" : "en")
 	const [searchQuery, setSearchQuery] = useState("")
 	const [sortOption, setSortOption] = useState<SortOption>("newest")
 	const [lastNonRelevantSort, setLastNonRelevantSort] = useState<SortOption | null>("newest")
@@ -292,7 +296,7 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 	return (
 		<div className="fixed overflow-hidden inset-0 flex flex-col w-full">
 			{/* HEADER */}
-			<ViewHeader environment={environment} onDone={onDone} title="History" />
+			<ViewHeader environment={environment} onDone={onDone} title={t.history.title} />
 
 			{/* FILTERS */}
 			<div className="flex flex-col gap-3 px-3">

@@ -1,4 +1,5 @@
 import type { ExtensionMessage } from "@shared/ExtensionMessage"
+import { getLanguageKey } from "@shared/Languages"
 import { ResetStateRequest } from "@shared/proto/cline/state"
 import { UserOrganization } from "@shared/proto/index.cline"
 import {
@@ -17,6 +18,7 @@ import { useEvent } from "react-use"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useClineAuth } from "@/context/ClineAuthContext"
 import { useExtensionState } from "@/context/ExtensionStateContext"
+import { useTranslation } from "@/i18n"
 import { cn } from "@/lib/utils"
 import { StateServiceClient } from "@/services/grpc-client"
 import { isAdminOrOwner } from "../account/helpers"
@@ -146,8 +148,10 @@ const SettingsView = ({ onDone, targetSection }: SettingsViewProps) => {
 		[],
 	) // Empty deps - these imports never change
 
-	const { version, environment, settingsInitialModelTab } = useExtensionState()
+	const { version, environment, settingsInitialModelTab, preferredLanguage } = useExtensionState()
 	const { activeOrganization } = useClineAuth()
+	const languageKey = getLanguageKey(preferredLanguage as any)
+	const t = useTranslation(languageKey === "vi" ? "vi" : "en")
 
 	const [activeTab, setActiveTab] = useState<string>(targetSection || SETTINGS_TABS[0].id)
 
@@ -258,7 +262,7 @@ const SettingsView = ({ onDone, targetSection }: SettingsViewProps) => {
 
 	return (
 		<Tab>
-			<ViewHeader environment={environment} onDone={onDone} title="Settings" />
+			<ViewHeader environment={environment} onDone={onDone} title={t.settings.title} />
 
 			<div className="flex flex-1 overflow-hidden">
 				<TabList
