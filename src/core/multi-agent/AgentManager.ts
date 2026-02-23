@@ -102,7 +102,7 @@ export class AgentManager {
 		}
 
 		registry.updateAgentStatus(agentId, status)
-		AgentEventBus.broadcastStatus(status)
+		AgentEventBus.getInstance().broadcastStatus(status)
 
 		const event: AgentEvent = {
 			agentId,
@@ -132,7 +132,7 @@ export class AgentManager {
 		}
 
 		registry.updateAgentStatus(agentId, status)
-		AgentEventBus.broadcastStatus(status)
+		AgentEventBus.getInstance().broadcastStatus(status)
 
 		const event: AgentEvent = {
 			agentId,
@@ -162,7 +162,7 @@ export class AgentManager {
 		}
 
 		registry.updateAgentStatus(agentId, status)
-		AgentEventBus.broadcastStatus(status)
+		AgentEventBus.getInstance().broadcastStatus(status)
 
 		const event: AgentEvent = {
 			agentId,
@@ -197,7 +197,7 @@ export class AgentManager {
 		}
 
 		registry.updateAgentStatus(agentId, status)
-		AgentEventBus.broadcastStatus(status)
+		AgentEventBus.getInstance().broadcastStatus(status)
 
 		const event: AgentEvent = {
 			agentId,
@@ -242,6 +242,6 @@ export class AgentManager {
 		}
 
 		registry.updateAgentStatus(agentId, status)
-		AgentEventBus.broadcastStatus(status)
+		AgentEventBus.getInstance().broadcastStatus(status)
 	}
 }

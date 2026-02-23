@@ -96,14 +96,14 @@ export class AgentRegistry {
 			return false
 		}
 		this.fileLocks.set(filePath, agentId)
-		AgentEventBus.notifyFileLocked(agentId, filePath)
+		AgentEventBus.getInstance().notifyFileLocked(agentId, filePath)
 		return true
 	}
 
 	unlockFile(agentId: string, filePath: string): void {
 		if (this.fileLocks.get(filePath) === agentId) {
 			this.fileLocks.delete(filePath)
-			AgentEventBus.notifyFileReleased(agentId, filePath)
+			AgentEventBus.getInstance().notifyFileReleased(agentId, filePath)
 		}
 	}
 
