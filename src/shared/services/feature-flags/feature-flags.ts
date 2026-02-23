@@ -28,8 +28,8 @@ export const FeatureFlagDefaultValue: Partial<Record<FeatureFlag, FeatureFlagPay
 	[FeatureFlag.EXTENSION_REMOTE_BANNERS_TTL]: 24 * 60 * 60 * 1000,
 	[FeatureFlag.REMOTE_WELCOME_BANNERS]: process.env.E2E_TEST === "true" || process.env.IS_DEV === "true",
 	[FeatureFlag.OPENAI_RESPONSES_WEBSOCKET_MODE]: false,
-	[FeatureFlag.MULTI_AGENT]: false,
-	[FeatureFlag.PR_AUTOMATION]: false,
+	[FeatureFlag.MULTI_AGENT]: true, // Enable multi-agent by default
+	[FeatureFlag.PR_AUTOMATION]: true, // Enable PR automation by default
 }
 
 export const FEATURE_FLAGS = Object.values(FeatureFlag)
