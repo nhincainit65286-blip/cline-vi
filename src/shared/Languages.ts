@@ -17,6 +17,7 @@ export type LanguageKey =
 	| "es"
 	| "zh-TW"
 	| "tr"
+	| "vi"
 
 export type LanguageDisplay =
 	| "English"
@@ -37,6 +38,7 @@ export type LanguageDisplay =
 	| "Spanish - Español"
 	| "Traditional Chinese - 繁體中文"
 	| "Turkish - Türkçe"
+	| "Vietnamese - Tiếng Việt"
 
 export const DEFAULT_LANGUAGE_SETTINGS: LanguageKey = "en"
 
@@ -59,6 +61,7 @@ export const languageOptions: { key: LanguageKey; display: LanguageDisplay }[] =
 	{ key: "es", display: "Spanish - Español" },
 	{ key: "zh-TW", display: "Traditional Chinese - 繁體中文" },
 	{ key: "tr", display: "Turkish - Türkçe" },
+	{ key: "vi", display: "Vietnamese - Tiếng Việt" },
 ]
 
 export function getLanguageKey(display: LanguageDisplay | undefined): LanguageKey {
