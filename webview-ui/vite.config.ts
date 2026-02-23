@@ -98,6 +98,23 @@ export default defineConfig({
 					},
 				}),
 			},
+			plugins: [
+				{
+					name: "no-service-worker",
+					generateBundle(_options, bundle) {
+						// Remove any service worker files that might be generated
+						for (const fileName in bundle) {
+							if (
+								fileName.includes("sw.js") ||
+								fileName.includes("service-worker") ||
+								fileName.includes("workbox")
+							) {
+								delete bundle[fileName]
+							}
+						}
+					},
+				},
+			],
 		},
 		chunkSizeWarningLimit: 100000,
 	},
