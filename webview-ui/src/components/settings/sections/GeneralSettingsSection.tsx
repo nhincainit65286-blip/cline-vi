@@ -1,8 +1,8 @@
-import { VSCodeCheckbox, VSCodeLink } from "@vscode/webview-ui-toolkit/react"
+import { getLanguageKey } from "@shared/Languages"
+import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { useTranslation } from "@/i18n"
-import { getLanguageKey } from "@shared/Languages"
 import PreferredLanguageSetting from "../PreferredLanguageSetting"
 import Section from "../Section"
 import { updateSetting } from "../utils/settingsHandlers"
@@ -45,9 +45,7 @@ const GeneralSettingsSection = ({ renderSectionHeader }: GeneralSettingsSectionP
 						</TooltipTrigger>
 					</Tooltip>
 
-					<p className="text-sm mt-[5px] text-description">
-						{t.settings.telemetryDescription}
-					</p>
+					<p className="text-sm mt-[5px] text-description">{t.settings.telemetryDescription}</p>
 				</div>
 			</Section>
 		</div>

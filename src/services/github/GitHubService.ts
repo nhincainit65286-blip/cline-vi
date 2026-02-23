@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios"
-import { simpleGit, SimpleGit } from "simple-git"
+import { SimpleGit, simpleGit } from "simple-git"
 import { Logger } from "@/shared/services/Logger"
 
 export interface GitHubConfig {
@@ -75,11 +75,11 @@ export class GitHubService {
 		if (!this.git) throw new Error("Git not initialized")
 
 		const currentBranch = await this.getCurrentBranch()
-		
+
 		if (baseBranch && baseBranch !== currentBranch) {
 			await this.git.checkout(baseBranch)
 		}
-		
+
 		await this.git.checkoutLocalBranch(branchName)
 		Logger.log(`[GitHubService] Created branch: ${branchName}`)
 	}
@@ -96,7 +96,7 @@ export class GitHubService {
 	async push(branchName?: string): Promise<void> {
 		if (!this.git) throw new Error("Git not initialized")
 
-		const branch = branchName || await this.getCurrentBranch()
+		const branch = branchName || (await this.getCurrentBranch())
 		await this.git.push(["-u", "origin", branch])
 		Logger.log(`[GitHubService] Pushed branch: ${branch}`)
 	}
@@ -106,16 +106,13 @@ export class GitHubService {
 			throw new Error("GitHub API not initialized. Please provide a token.")
 		}
 
-		const response = await this.api.post(
-			`/repos/${this.config.owner}/${this.config.repo}/pulls`,
-			{
-				title: options.title,
-				body: options.body,
-				head: options.head,
-				base: options.base,
-				draft: options.draft || false,
-			}
-		)
+		const response = await this.api.post(`/repos/${this.config.owner}/${this.config.repo}/pulls`, {
+			title: options.title,
+			body: options.body,
+			head: options.head,
+			base: options.base,
+			draft: options.draft || false,
+		})
 
 		const pr: PRInfo = {
 			number: response.data.number,
@@ -137,9 +134,7 @@ export class GitHubService {
 		}
 
 		try {
-			const response = await this.api.get(
-				`/repos/${this.config.owner}/${this.config.repo}/pulls/${prNumber}`
-			)
+			const response = await this.api.get(`/repos/${this.config.owner}/${this.config.repo}/pulls/${prNumber}`)
 
 			return {
 				number: response.data.number,
@@ -161,10 +156,7 @@ export class GitHubService {
 			throw new Error("GitHub API not initialized")
 		}
 
-		const response = await this.api.get(
-			`/repos/${this.config.owner}/${this.config.repo}/pulls`,
-			{ params: { state } }
-		)
+		const response = await this.api.get(`/repos/${this.config.owner}/${this.config.repo}/pulls`, { params: { state } })
 
 		return response.data.map((pr: Record<string, unknown>) => ({
 			number: pr.number,
@@ -172,8 +164,8 @@ export class GitHubService {
 			body: pr.body,
 			state: pr.state,
 			htmlUrl: pr.html_url,
-			head: pr.head?.ref,
-			base: pr.base?.ref,
+			head: (pr.head as Record<string, unknown>)?.ref as string,
+			base: (pr.base as Record<string, unknown>)?.ref as string,
 		}))
 	}
 
@@ -183,10 +175,9 @@ export class GitHubService {
 		}
 
 		try {
-			await this.api.put(
-				`/repos/${this.config.owner}/${this.config.repo}/pulls/${prNumber}/merge`,
-				{ merge_method: method }
-			)
+			await this.api.put(`/repos/${this.config.owner}/${this.config.repo}/pulls/${prNumber}/merge`, {
+				merge_method: method,
+			})
 			Logger.log(`[GitHubService] Merged PR #${prNumber}`)
 			return true
 		} catch (error) {
@@ -195,15 +186,14 @@ export class GitHubService {
 		}
 	}
 
-	async getRecentCommits(branch: string, limit: number = 10): Promise<CommitInfo[]> {
+	async getRecentCommits(branch: string, limit = 10): Promise<CommitInfo[]> {
 		if (!this.api || !this.config) {
 			throw new Error("GitHub API not initialized")
 		}
 
-		const response = await this.api.get(
-			`/repos/${this.config.owner}/${this.config.repo}/commits`,
-			{ params: { sha: branch, per_page: limit } }
-		)
+		const response = await this.api.get(`/repos/${this.config.owner}/${this.config.repo}/commits`, {
+			params: { sha: branch, per_page: limit },
+		})
 
 		return response.data.map((commit: Record<string, unknown>) => ({
 			sha: commit.sha,
