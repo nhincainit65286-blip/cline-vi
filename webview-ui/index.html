@@ -4,21 +4,40 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Cline Webview</title>
-		<!-- Disable service worker for VS Code webview -->
-		<script>
-			// Prevent any service worker registration
-			if ('serviceWorker' in navigator) {
-				navigator.serviceWorker.getRegistrations().then((registrations) => {
-					for(const registration of registrations) {
-						registration.unregister();
-					}
-				});
-				// Override register to prevent new registrations
-				navigator.serviceWorker.register = () => Promise.reject(new Error('Service workers are disabled in VS Code webview'));
-			}
-		</script>
 	</head>
 	<body>
+		<!-- Block service worker IMMEDIATELY before anything else -->
+		<script>
+			(() => {
+				if ('serviceWorker' in navigator) {
+					// Unregister existing
+					try {
+						navigator.serviceWorker.getRegistrations().then(regs => {
+							regs.forEach(reg => reg.unregister());
+						});
+					} catch(e) {}
+					
+					// Block new registrations with non-writable property
+					try {
+						Object.defineProperty(navigator.serviceWorker, 'register', {
+							value: () => Promise.reject(new Error('SW blocked')),
+							writable: false,
+							configurable: false
+						});
+					} catch(e) {
+						// Fallback if defineProperty fails
+						navigator.serviceWorker.register = () => Promise.reject(new Error('SW blocked'));
+					}
+				}
+				
+				// Also block if someone tries to access it via window
+				if (window.navigator && 'serviceWorker' in window.navigator) {
+					try {
+						delete window.navigator.serviceWorker;
+					} catch(e) {}
+				}
+			})();
+		</script>
 		<div id="root"></div>
 		<script type="module" src="/src/main.tsx"></script>
 	</body>
