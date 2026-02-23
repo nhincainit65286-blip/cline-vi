@@ -100,4 +100,6 @@ class AgentEventBusClass extends EventEmitter {
 	}
 }
 
-export const AgentEventBus = AgentEventBusClass.getInstance()
+// Export the class, not the instance
+// Users should call AgentEventBusClass.getInstance() to get the singleton
+export { AgentEventBusClass as AgentEventBus }

@@ -1,7 +1,7 @@
-import { AgentEventBus, AgentEventType, AgentStatus, type AgentEvent } from "./EventBus"
-import { AgentRegistry, type AgentInfo } from "./AgentRegistry"
-import { Logger } from "@/shared/services/Logger"
 import { ulid } from "ulid"
+import { Logger } from "@/shared/services/Logger"
+import { type AgentInfo, AgentRegistry } from "./AgentRegistry"
+import { type AgentEvent, AgentEventBus, AgentEventType, AgentStatus } from "./EventBus"
 
 export interface AgentConfig {
 	name?: string
@@ -19,11 +19,14 @@ export interface CreateAgentResult {
 
 export class AgentManager {
 	private static instance: AgentManager
-	private agentCallbacks: Map<string, {
-		onStatusChange?: (status: AgentStatus) => void
-		onComplete?: (result: unknown) => void
-		onError?: (error: Error) => void
-	}> = new Map()
+	private agentCallbacks: Map<
+		string,
+		{
+			onStatusChange?: (status: AgentStatus) => void
+			onComplete?: (result: unknown) => void
+			onError?: (error: Error) => void
+		}
+	> = new Map()
 
 	static getInstance(): AgentManager {
 		if (!AgentManager.instance) {
@@ -33,7 +36,7 @@ export class AgentManager {
 	}
 
 	constructor() {
-		AgentEventBus.onAgentEvent(this.handleAgentEvent.bind(this))
+		AgentEventBus.getInstance().onAgentEvent(this.handleAgentEvent.bind(this))
 	}
 
 	private handleAgentEvent(event: AgentEvent): void {
@@ -79,7 +82,7 @@ export class AgentManager {
 			onStatusChange?: (status: AgentStatus) => void
 			onComplete?: (result: unknown) => void
 			onError?: (error: Error) => void
-		}
+		},
 	): Promise<void> {
 		const registry = AgentRegistry.getInstance()
 		const agent = registry.getAgent(agentId)
@@ -107,7 +110,7 @@ export class AgentManager {
 			payload: { task },
 			timestamp: Date.now(),
 		}
-		AgentEventBus.emitAgentEvent(event)
+		AgentEventBus.getInstance().emitAgentEvent(event)
 		Logger.log(`[AgentManager] Started agent: ${agentId} with task: ${task}`)
 	}
 
@@ -137,7 +140,7 @@ export class AgentManager {
 			payload: result,
 			timestamp: Date.now(),
 		}
-		AgentEventBus.emitAgentEvent(event)
+		AgentEventBus.getInstance().emitAgentEvent(event)
 		Logger.log(`[AgentManager] Completed agent: ${agentId}`)
 	}
 
@@ -167,7 +170,7 @@ export class AgentManager {
 			payload: error,
 			timestamp: Date.now(),
 		}
-		AgentEventBus.emitAgentEvent(event)
+		AgentEventBus.getInstance().emitAgentEvent(event)
 		Logger.log(`[AgentManager] Failed agent: ${agentId}, error: ${error.message}`)
 	}
 
@@ -202,7 +205,7 @@ export class AgentManager {
 			payload: null,
 			timestamp: Date.now(),
 		}
-		AgentEventBus.emitAgentEvent(event)
+		AgentEventBus.getInstance().emitAgentEvent(event)
 		Logger.log(`[AgentManager] Cancelled agent: ${agentId}`)
 	}
 

@@ -1,5 +1,5 @@
-import { AgentEventBus, AgentEventType, AgentStatus, type AgentEvent } from "./EventBus"
 import { Logger } from "@/shared/services/Logger"
+import { type AgentEvent, AgentEventBus, AgentEventType, AgentStatus } from "./EventBus"
 
 export interface AgentInfo {
 	id: string
@@ -25,7 +25,7 @@ export class AgentRegistry {
 	}
 
 	constructor() {
-		AgentEventBus.onAgentEvent(this.handleAgentEvent.bind(this))
+		AgentEventBus.getInstance().onAgentEvent(this.handleAgentEvent.bind(this))
 	}
 
 	private handleAgentEvent(event: AgentEvent): void {
@@ -71,9 +71,7 @@ export class AgentRegistry {
 	}
 
 	getActiveAgents(): AgentInfo[] {
-		return Array.from(this.agents.values()).filter(
-			(agent) => agent.status === "running"
-		)
+		return Array.from(this.agents.values()).filter((agent) => agent.status === "running")
 	}
 
 	updateAgentStatus(agentId: string, status: AgentStatus): void {

@@ -218,6 +218,14 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 		prAutomationEnabled,
 	} = useExtensionState()
 
+	// Debug: Log the values
+	console.log("🔍 Feature Settings Debug:", {
+		multiAgentEnabled,
+		prAutomationEnabled,
+		clineWebToolsEnabled,
+		worktreesEnabled,
+	})
+
 	const handleFocusChainIntervalChange = useCallback(
 		(value: number) => {
 			updateSetting("focusChainSettings", { ...focusChainSettings, remindClineInterval: value })
