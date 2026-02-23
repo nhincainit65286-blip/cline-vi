@@ -64,6 +64,28 @@ export interface Translations {
 		addServer: string
 		removeServer: string
 		noServers: string
+		configure: string
+		marketplace: string
+		addRemote: string
+		addLocal: string
+	}
+	welcome: {
+		title: string
+		subtitle: string
+		description: string
+		getStarted: string
+		letsGo: string
+		useApiKey: string
+		signUp: string
+	}
+	terminal: {
+		title: string
+		shell: string
+		profile: string
+	}
+	browser: {
+		title: string
+		headless: string
 	}
 }
 
@@ -132,6 +154,28 @@ export const translations: Record<Language, Translations> = {
 			addServer: "Add Server",
 			removeServer: "Remove Server",
 			noServers: "No MCP servers configured",
+			configure: "Configure",
+			marketplace: "Marketplace",
+			addRemote: "Add Remote",
+			addLocal: "Add Local",
+		},
+		welcome: {
+			title: "Hi, I'm Cline",
+			subtitle: "I can do all kinds of tasks thanks to breakthroughs in Claude 4.6 Sonnet's agentic coding capabilities and access to tools that let me create & edit files, explore complex projects, use a browser, and execute terminal commands (with your permission, of course). I can even use MCP to create new tools and extend my own capabilities.",
+			description: "Sign up for an account to get started for free, or use an API key that provides access to models like Claude Sonnet.",
+			getStarted: "Get Started",
+			letsGo: "Let's Go",
+			useApiKey: "Use API Key",
+			signUp: "Sign Up",
+		},
+		terminal: {
+			title: "Terminal Settings",
+			shell: "Shell",
+			profile: "Profile",
+		},
+		browser: {
+			title: "Browser Settings",
+			headless: "Headless Mode",
 		},
 	},
 	vi: {
@@ -198,6 +242,28 @@ export const translations: Record<Language, Translations> = {
 			addServer: "Thêm máy chủ",
 			removeServer: "Xóa máy chủ",
 			noServers: "Chưa có máy chủ MCP nào được cấu hình",
+			configure: "Cấu hình",
+			marketplace: "Thị trường",
+			addRemote: "Thêm từ xa",
+			addLocal: "Thêm cục bộ",
+		},
+		welcome: {
+			title: "Xin chào, tôi là Cline",
+			subtitle: "Tôi có thể thực hiện đủ loại tác vụ nhờ những đột phá trong khả năng lập trình proxy của Claude 4.6 Sonnet và quyền truy cập vào các công cụ cho phép tôi tạo & chỉnh sửa tệp, khám phá các dự án phức tạp, sử dụng trình duyệt và thực thi lệnh terminal (với sự cho phép của bạn). Tôi thậm chí có thể sử dụng MCP để tạo công cụ mới và mở rộng khả năng của chính mình.",
+			description: "Đăng ký tài khoản để bắt đầu miễn phí, hoặc sử dụng API key để truy cập các mô hình như Claude Sonnet.",
+			getStarted: "Bắt đầu",
+			letsGo: "Đi thôi",
+			useApiKey: "Sử dụng API Key",
+			signUp: "Đăng ký",
+		},
+		terminal: {
+			title: "Cài đặt Terminal",
+			shell: "Shell",
+			profile: "Hồ sơ",
+		},
+		browser: {
+			title: "Cài đặt Trình duyệt",
+			headless: "Chế độ Headless",
 		},
 	},
 }

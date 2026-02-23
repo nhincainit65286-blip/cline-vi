@@ -2,9 +2,11 @@ import { McpViewTab } from "@shared/mcp"
 import { EmptyRequest } from "@shared/proto/cline/common"
 import { McpServers } from "@shared/proto/cline/mcp"
 import { convertProtoMcpServersToMcpServers } from "@shared/proto-conversions/mcp/mcp-server-conversion"
+import { getLanguageKey } from "@shared/Languages"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useExtensionState } from "@/context/ExtensionStateContext"
+import { useTranslation } from "@/i18n"
 import { McpServiceClient } from "@/services/grpc-client"
 import ViewHeader from "../../common/ViewHeader"
 import AddRemoteServerForm from "./tabs/add-server/AddRemoteServerForm"
@@ -17,7 +19,9 @@ type McpViewProps = {
 }
 
 const McpConfigurationView = ({ onDone, initialTab }: McpViewProps) => {
-	const { remoteConfigSettings, setMcpServers, environment } = useExtensionState()
+	const { remoteConfigSettings, setMcpServers, environment, preferredLanguage } = useExtensionState()
+	const languageKey = getLanguageKey(preferredLanguage as any)
+	const t = useTranslation(languageKey === "vi" ? "vi" : "en")
 	// Show marketplace by default unless remote config explicitly disables it
 	const showMarketplace = remoteConfigSettings?.mcpMarketplaceEnabled !== false
 	const showRemoteServers = remoteConfigSettings?.blockPersonalRemoteMCPServers !== true
@@ -74,7 +78,7 @@ const McpConfigurationView = ({ onDone, initialTab }: McpViewProps) => {
 				display: "flex",
 				flexDirection: "column",
 			}}>
-			<ViewHeader environment={environment} onDone={onDone} title="MCP Servers" />
+			<ViewHeader environment={environment} onDone={onDone} title={t.mcp.title} />
 
 			<div style={{ flex: 1, overflow: "auto" }}>
 				{/* Tabs container */}

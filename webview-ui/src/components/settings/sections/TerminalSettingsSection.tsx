@@ -1,9 +1,11 @@
 import { UpdateTerminalConnectionTimeoutResponse } from "@shared/proto/index.cline"
+import { getLanguageKey } from "@shared/Languages"
 import { VSCodeCheckbox, VSCodeDropdown, VSCodeOption, VSCodeTextField } from "@vscode/webview-ui-toolkit/react"
 import React, { useState } from "react"
 import { PlatformType } from "@/config/platform.config"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { usePlatform } from "@/context/PlatformContext"
+import { useTranslation } from "@/i18n"
 import { StateServiceClient } from "../../../services/grpc-client"
 import Section from "../Section"
 import TerminalOutputLineLimitSlider from "../TerminalOutputLineLimitSlider"
@@ -20,7 +22,10 @@ export const TerminalSettingsSection: React.FC<TerminalSettingsSectionProps> = (
 		defaultTerminalProfile,
 		availableTerminalProfiles,
 		vscodeTerminalExecutionMode,
+		preferredLanguage,
 	} = useExtensionState()
+	const languageKey = getLanguageKey(preferredLanguage as any)
+	const t = useTranslation(languageKey === "vi" ? "vi" : "en")
 	const platformConfig = usePlatform()
 	const isVsCodePlatform = platformConfig.type === PlatformType.VSCODE
 
