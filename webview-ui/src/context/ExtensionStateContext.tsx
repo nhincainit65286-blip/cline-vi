@@ -289,6 +289,8 @@ export const ExtensionStateContextProvider: React.FC<{
 		hooksEnabled: false,
 		nativeToolCallSetting: false,
 		enableParallelToolCalling: false,
+		multiAgentEnabled: { user: false, featureFlag: false },
+		prAutomationEnabled: { user: false, featureFlag: false },
 	})
 	const [expandTaskHeader, setExpandTaskHeader] = useState(true)
 	const [didHydrateState, setDidHydrateState] = useState(false)

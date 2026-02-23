@@ -126,6 +126,20 @@ const experimentalFeatures: FeatureToggle[] = [
 		stateKey: "doubleCheckCompletionEnabled",
 		settingKey: "doubleCheckCompletionEnabled",
 	},
+	{
+		id: "multi-agent",
+		label: "Multi-Agent",
+		description: "Enable multiple AI agents to work in parallel with inter-agent communication.",
+		stateKey: "multiAgentEnabled",
+		settingKey: "multiAgentEnabled",
+	},
+	{
+		id: "pr-automation",
+		label: "PR Automation",
+		description: "Enable automatic Pull Request creation and management.",
+		stateKey: "prAutomationEnabled",
+		settingKey: "prAutomationEnabled",
+	},
 ]
 
 const FeatureRow = memo(
@@ -200,6 +214,8 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 		enableParallelToolCalling,
 		backgroundEditEnabled,
 		doubleCheckCompletionEnabled,
+		multiAgentEnabled,
+		prAutomationEnabled,
 	} = useExtensionState()
 
 	const handleFocusChainIntervalChange = useCallback(
@@ -225,12 +241,16 @@ const FeatureSettingsSection = ({ renderSectionHeader }: FeatureSettingsSectionP
 		backgroundEditEnabled,
 		doubleCheckCompletionEnabled,
 		yoloModeToggled: isYoloRemoteLocked ? remoteConfigSettings?.yoloModeToggled : yoloModeToggled,
+		multiAgentEnabled: multiAgentEnabled?.user,
+		prAutomationEnabled: prAutomationEnabled?.user,
 	}
 
 	// Visibility lookup for features with feature flags
 	const featureVisibility: Record<string, boolean | undefined> = {
 		clineWebToolsEnabled: clineWebToolsEnabled?.featureFlag,
 		worktreesEnabled: worktreesEnabled?.featureFlag,
+		multiAgentEnabled: multiAgentEnabled?.featureFlag,
+		prAutomationEnabled: prAutomationEnabled?.featureFlag,
 	}
 
 	// Handler for feature toggle changes, supports nested settings like focusChainSettings

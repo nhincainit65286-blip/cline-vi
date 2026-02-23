@@ -32,6 +32,7 @@ import { OcaAuthService } from "@/services/auth/oca/OcaAuthService"
 import { LogoutReason } from "@/services/auth/types"
 import { BannerService } from "@/services/banner/BannerService"
 import { featureFlagsService } from "@/services/feature-flags"
+import { FeatureFlag } from "@/shared/services/feature-flags/feature-flags"
 import { getDistinctId } from "@/services/logging/distinctId"
 import { telemetryService } from "@/services/telemetry"
 import { ClineExtensionContext } from "@/shared/cline"
@@ -993,6 +994,14 @@ export class Controller {
 			worktreesEnabled: {
 				user: this.stateManager.getGlobalSettingsKey("worktreesEnabled"),
 				featureFlag: featureFlagsService.getWorktreesEnabled(),
+			},
+			multiAgentEnabled: {
+				user: this.stateManager.getGlobalSettingsKey("multiAgentEnabled"),
+				featureFlag: featureFlagsService.getBooleanFlagEnabled(FeatureFlag.MULTI_AGENT),
+			},
+			prAutomationEnabled: {
+				user: this.stateManager.getGlobalSettingsKey("prAutomationEnabled"),
+				featureFlag: featureFlagsService.getBooleanFlagEnabled(FeatureFlag.PR_AUTOMATION),
 			},
 			hooksEnabled: getHooksEnabledSafe(),
 			lastDismissedInfoBannerVersion,

@@ -113,6 +113,8 @@ export interface ExtensionState {
 	banners?: BannerCardData[]
 	welcomeBanners?: BannerCardData[]
 	openAiCodexIsAuthenticated?: boolean
+	multiAgentEnabled?: ClineFeatureSetting
+	prAutomationEnabled?: ClineFeatureSetting
 }
 
 export interface ClineMessage {
