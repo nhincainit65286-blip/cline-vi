@@ -4,6 +4,19 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Cline Webview</title>
+		<!-- Disable service worker for VS Code webview -->
+		<script>
+			// Prevent any service worker registration
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.getRegistrations().then((registrations) => {
+					for(const registration of registrations) {
+						registration.unregister();
+					}
+				});
+				// Override register to prevent new registrations
+				navigator.serviceWorker.register = () => Promise.reject(new Error('Service workers are disabled in VS Code webview'));
+			}
+		</script>
 	</head>
 	<body>
 		<div id="root"></div>
